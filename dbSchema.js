@@ -43,5 +43,5 @@ await db.query(
 
 
 // Seed db with test data
-// deno run --allow-read --allow-write dbSchema.js
-// sqlite3 projects.db < dbSeed.sql
+//deno run --allow-read --allow-write dbSchema.js
+//sqlite3 projects.db < dbSeed.sql
