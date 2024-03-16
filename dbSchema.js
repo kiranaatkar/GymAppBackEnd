@@ -20,14 +20,14 @@ await db.query(
 );
 
 await db.query(
-    `CREATE TABLE squads (
-      id INTEGER PRIMARY KEY,
-      squad_name VARCHAR(50) UNIQUE NOT NULL,
-      squad_description TEXT UNIQUE NOT NULL,
-      created_at DATETIME NOT NULL,
-      updated_at DATETIME NOT NULL,
-    );`
-  );
+  `CREATE TABLE squads (
+    id INTEGER PRIMARY KEY,
+    squad_name VARCHAR(50) UNIQUE NOT NULL,
+    squad_description TEXT UNIQUE,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL -- Removed trailing comma
+  );`
+);
 
 await db.query(
   `CREATE TABLE memberships (
@@ -44,4 +44,4 @@ await db.query(
 
 // Seed db with test data
 //deno run --allow-read --allow-write dbSchema.js
-//sqlite3 projects.db < dbSeed.sql
+//sqlite3 gymApp.db < dbSeed.sql
