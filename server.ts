@@ -8,35 +8,35 @@ import { User, Squad } from "./interfaces.ts";
 
 // denon run --allow-net --allow-read --allow-write server.js
 
-const db = new DB("gymApp.db");
+const db = new DB("gymAppTest.db");
 const app = new Application();
 const PORT = 8080;
-    const allowedHeaders = [
-    "Authorization",
-    "Content-Type",
-    "Accept",
-    "Origin",
-    "User-Agent",
-    ];
-    const allowedMethods = ["GET", "POST", "DELETE"];
+const allowedHeaders = [
+"Authorization",
+"Content-Type",
+"Accept",
+"Origin",
+"User-Agent",
+];
+const allowedMethods = ["GET", "POST", "DELETE"];
 
-    const corsConfig = abcCors({
+const corsConfig = abcCors({
     origin: "http://localhost:3000",
     Headers: allowedHeaders,
     Methods: allowedMethods,
     credentials: true,
-    });
+});
 
-    app.use(corsConfig);
+app.use(corsConfig);
 
-    app
-    .post("/users", createAccount)
-    .post("/squads/:squadId/addUser", addUserToSquad)
-    .post("/squads/:squadId/removeUser", removeUserFromSquad)
-    .get("/squads/:squadId/users", retrieveSquadUsers)
-    .get("/users/:userId/squads", retrieveUserSquads)
-    
-    .start({ port: PORT });
+app
+.post("/users", createAccount)
+.post("/squads/:squadId/addUser", addUserToSquad)
+.post("/squads/:squadId/removeUser", removeUserFromSquad)
+.get("/squads/:squadId/users", retrieveSquadUsers)
+.get("/users/:userId/squads", retrieveUserSquads)
+
+.start({ port: PORT });
 
 async function createAccount(server) {
     const { email, password, confirmation } = await server.body;
@@ -67,16 +67,12 @@ async function retrieveSquadUsers(server) {
     }
 
     const query: string = `
-        SELECT u.* FROM users u
+        SELECT * FROM users u
         JOIN memberships m ON u.id = m.user_id
         WHERE m.squad_id = ?`;
     
     try {
-        const users: User[] = [];
-        for await (const row of db.query(query, [squad_id])) {
-            users.push(row);
-        }
-
+        const users: User[] = [...await db.query(query, [squadId])]
         server.json({ users }, 200);
     } catch (error) {
         console.error("Error retrieving squad users:", error);
@@ -85,22 +81,26 @@ async function retrieveSquadUsers(server) {
 }
 
 
-
-
 async function retrieveUserSquads(server) {
-    const { user_id } = await server.params
-    const user: User = await findById("users", user_id)
+    const { userId } = await server.params
+    const user: User = await findById("users", userId)
 
     if (!user) {
-        server.json({ msg: `User ${user_id} doesn't exist` }, 404);
+        server.json({ msg: `User ${userId} doesn't exist` }, 404);
     }
 
-    const query: string = `SELECT * FROM squads s
-                   JOIN memberships m
-                   ON s.id = m.squad_id
-                   WHERE m.user_id = ?`;
-    const squads: Squad[] = [...db.query(query, user_id)]
-    server.json({ squads }, 200)
+    const query: string = `
+        SELECT * FROM squads s
+        JOIN memberships m ON s.id = m.squad_id
+        WHERE m.user_id = ?`;
+
+    try {
+        const squads: Squad[] = [...await db.query(query, [userId])]
+        server.json({ squads }, 200)
+    } catch (error) {
+        console.error("Error retrieving user squads:", error);
+        server.json({ msg: "An unexpected error occurred" }, 500);
+    }
 }
 
 
@@ -126,11 +126,13 @@ async function removeUserFromSquad(server) {
 // HELPER METHODS
 
 async function findById(table, id) {
-    const query = `SELECT * from ? where id = ?`;
-    const [entity] = await db.query(query, [table, id]).asObjects();
+    // cant parameterise table names in SQL, but this variable is not user generated
+    const query = `SELECT * from ${table} where id = ?`;
+    const [entity] = await db.query(query, [id]).asObjects();
     
     return entity;
 }
+
 
 
 async function validateCreateAccountRequest(email, password, confirmation) {

@@ -1,12 +1,14 @@
 import { DB } from "https://deno.land/x/sqlite/mod.ts";
 
+const dbName = "gymAppTest.db"
+
 try {
-  await Deno.remove("gymApp.db");
+  await Deno.remove(dbName);
 } catch {
   // nothing to remove
 }
 
-const db = new DB("./gymApp.db");
+const db = new DB(`./${dbName}`);
 
 await db.query(
   `CREATE TABLE users (
@@ -44,4 +46,4 @@ await db.query(
 
 // Seed db with test data
 //deno run --allow-read --allow-write dbSchema.js
-//sqlite3 gymApp.db < dbSeed.sql
+//sqlite3 gymAppTest.db < dbSeed.sql
