@@ -82,6 +82,59 @@ test(suite, 'posting valid user successfully removes user to squad.', async () =
 
 // ----------------------  /users tests ----------------------
 
+test(suite, '/users create user post succeeds.', async () => {
+  const email = "user@example.com"
+  const username = "testUser"
+  const password = "mynamejeff123"
+  const confirmation = "mynamejeff123"
+  const response = await fetch(`${apiURL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, username, password, confirmation }),
+  });
+  assertEquals(response.status, 200);
+  const json = await response.json();
+  assertEquals(json.message, "User created successfully");
+  assertEquals(json.user.email, email);
+  assertEquals(json.user.username, username)
+});
+
+test(suite, '/users create user post fails for duplicate username.', async () => {
+  const email = "user@example.com"
+  const username = "user1"
+  const password = "mynamejeff123"
+  const confirmation = "mynamejeff123"
+  const response = await fetch(`${apiURL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, username, password, confirmation }),
+  });
+  assertEquals(response.status, 400);
+  const json = await response.json();
+  assertEquals(json.message, "An account already exists with the username user1.");
+});
+
+test(suite, '/users create user post fails for password confirmation mismatch.', async () => {
+  const email = "user@example.com"
+  const username = "testUser"
+  const password = "mynamejeff123"
+  const confirmation = "deeznuts"
+  const response = await fetch(`${apiURL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, username, password, confirmation }),
+  });
+  assertEquals(response.status, 400);
+  const json = await response.json();
+  assertEquals(json.message, "Passwords do not match.");
+});
+
 test(suite, '/users/{user_id}/squads returns all squads a user is part of.', async () => {
     const userId = 1;
     const response = await fetch(`${apiURL}/users/${userId}/squads`);
