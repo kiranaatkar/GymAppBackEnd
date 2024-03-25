@@ -7,18 +7,18 @@ export interface User {
     updated_at: Date;
   }
   
-  export interface Squad {
-    id?: number;
-    squad_name: string;
-    squad_description?: string;
-    created_at: Date;
-    updated_at: Date;
-  }
-  
-  export interface Membership {
-    id?: number;
-    created_at: Date;
-    updated_at: Date;
-    user_id: number;
-    squad_id: number;
-  }
+export interface Squad {
+  id?: number;
+  squad_name: string;
+  squad_description?: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Membership {
+  id?: number;
+  created_at: Date;
+  updated_at: Date;
+  user_id: number;
+  squad_id: number;
+}
