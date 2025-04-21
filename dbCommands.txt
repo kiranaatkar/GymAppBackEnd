@@ -1,0 +1,3 @@
+postgres=# CREATE DATABASE gym_app
+postgres-# CREATE USER gym_admin WITH ENCRYPED PASSWORD '<password>'
+postgres-# GRANT ALL PRIVILEGES ON DATABASE gym_app TO gym_admin

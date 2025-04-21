@@ -6,8 +6,6 @@ import * as bcrypt from "https://deno.land/x/bcrypt@v0.3.0/mod.ts";
 import { User, Squad } from "./interfaces.ts";
 
 
-// denon run --allow-net --allow-read --allow-write server.js
-
 const db = new DB("gymAppTest.db");
 const app = new Application();
 const PORT = 8080;

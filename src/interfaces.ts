@@ -22,3 +22,9 @@ export interface Membership {
   user_id: number;
   squad_id: number;
 }
+
+export interface Visit {
+  id?: number;
+  visit_date: Date;
+  user_id: number;
+}
