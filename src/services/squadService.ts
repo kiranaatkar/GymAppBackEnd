@@ -1,4 +1,4 @@
-import { User, Squad } from "../interfaces";
+import { User, Squad, Visit } from "../interfaces";
 import pool from "../config/db";
 
 class SquadService {
@@ -41,6 +41,26 @@ class SquadService {
       [squadId]
     );
     return members;
+  }
+
+  static async getSquadVisits(squadId: number, startDate: Date, endDate: Date): Promise<Visit[] | string> {
+    try {
+      const query = `
+        SELECT v.visit_date, u.username, u.id AS user_id
+        FROM visits v
+        JOIN users u ON v.user_id = u.id
+        JOIN memberships m ON u.id = m.user_id
+        WHERE m.squad_id = $1 AND v.visit_date BETWEEN $2 AND $3
+        ORDER BY v.visit_date DESC
+      `;
+  
+      const { rows } = await pool.query(query, [squadId, startDate, endDate]);
+  
+      return rows;
+    } catch (err) {
+      console.error("Error fetching squad visits:", err);
+      return "Failed to fetch squad visits";
+    }
   }
 
 }

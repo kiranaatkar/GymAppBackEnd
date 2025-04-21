@@ -46,3 +46,34 @@ export const getSquadMembers = async (req: Request, res: Response) => {
       .json({ error: "Internal server error" });
   }
 };
+
+export const getSquadVisits = async (req: Request, res: Response) => {
+  try {
+    const squadId = parseInt(req.params.squadId);
+    const { startDate, endDate } = req.query;
+    const start = startDate
+      ? new Date(startDate as string)
+      : new Date(Date.now() - 14 * 24 * 60 * 60 * 1000); // 2 weeks ago
+    const end = endDate ? new Date(endDate as string) : new Date();
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Invalid date format" });
+      return;
+    }
+    if (start > end) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Start date cannot be after end date" });
+      return;
+    }
+
+    const visits = await SquadService.getSquadVisits(squadId, start, end);
+    res.json(visits);
+  } catch (error) {
+    console.error("Error fetching squad visits:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal server error" });
+  }
+}

@@ -3,6 +3,7 @@ import {
   createSquad,
   getAllSquads,
   getSquadMembers,
+  getSquadVisits
 } from "../controllers/squadController";
 
 const router = express.Router();
@@ -50,6 +51,42 @@ router.get("/all", getAllSquads);
  *         description: Internal server error
  */
 router.get("/:squadId/members", getSquadMembers);
+
+/**
+ * @swagger
+ * /api/squads/{squadId}/visits:
+ *   get:
+ *     summary: Get gym visit timestamps for all users in a squad
+ *     tags: [Squads]
+ *     parameters:
+ *       - in: path
+ *         name: squadId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the squad
+ *       - in: query
+ *         name: startDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Filter start date (YYYY-MM-DD). Defaults to 2 weeks ago.
+ *       - in: query
+ *         name: endDate
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Filter end date (YYYY-MM-DD). Defaults to today.
+ *     responses:
+ *       200:
+ *         description: List of visit timestamps
+ *       404:
+ *         description: Squad not found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/:squadId/visits", getSquadVisits);
+
 
 /**
  * @swagger
