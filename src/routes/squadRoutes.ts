@@ -32,7 +32,7 @@ router.get("/all", getAllSquads);
  * /api/squads/{squadId}/members:
  *   get:
  *     summary: Get all users which are part of a squad
- *     tags: [Users]
+ *     tags: [Squads]
  *     description: Fetches all users registered to the squad
  *     parameters:
  *       - name: squadId
@@ -49,7 +49,6 @@ router.get("/all", getAllSquads);
  *       500:
  *         description: Internal server error
  */
-
 router.get("/:squadId/members", getSquadMembers);
 
 /**
