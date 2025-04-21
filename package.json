@@ -1,4 +1,17 @@
 {
+  "name": "GymAppBackEnd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts"
+  },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
@@ -11,9 +24,6 @@
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2"
-  },
-  "scripts": {
-    "dev": "ts-node src/server.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
