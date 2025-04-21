@@ -4,7 +4,9 @@ import {
   getUserSquads,
   getAllUsers,
   signInUser,
-  getUserVisits
+  getUserVisits,
+  addUserVisit,
+  deleteUserVisit
 } from "../controllers/userController";
 
 const router = express.Router();
@@ -129,5 +131,70 @@ router.post("/create", createUser);
  *         description: Invalid credentials
  */
 router.post("/signin", signInUser);
+
+/**
+ * @swagger
+ * /api/users/{userId}/visits:
+ *   post:
+ *     summary: Add a new visit for a user
+ *     tags: [Users]
+ *     description: Adds a new visit record for the specified user. The visit_date is optional and defaults to the current timestamp if not provided.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the user
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               visit_date:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2025-04-11T10:00:00Z"
+ *     responses:
+ *       201:
+ *         description: Visit added successfully
+ *       400:
+ *         description: Invalid user ID
+ *       500:
+ *         description: Internal server error
+ */
+router.post("/:userId/visits", addUserVisit);
+
+/**
+ * @swagger
+ * /api/users/{userId}/visits/{visitId}:
+ *   delete:
+ *     summary: Delete a user's visit
+ *     tags: [Users]
+ *     description: Deletes a specific visit record for the given user.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the user
+ *       - in: path
+ *         name: visitId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the visit to delete
+ *     responses:
+ *       200:
+ *         description: Visit deleted successfully
+ *       404:
+ *         description: Visit not found
+ *       500:
+ *         description: Internal server error
+ */
+router.delete("/:userId/visits/:visitId", deleteUserVisit);
 
 export default router;

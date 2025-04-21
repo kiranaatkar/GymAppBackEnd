@@ -1,4 +1,4 @@
-import { User, Squad } from "../interfaces";
+import { User, Squad, Visit } from "../interfaces";
 import pool from "../config/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -81,12 +81,23 @@ class UserService {
     return squads;
   }
 
-  static async getUserVisits(userId: number): Promise<Date[]> {
-    const { rows: visits } = await pool.query<Date>(
-      "SELECT visit_date FROM visits WHERE user_id = $1",
+  static async getUserVisits(userId: number): Promise<Visit[]> {
+    const { rows: visits } = await pool.query<Visit>(
+      "SELECT id, visit_date FROM visits WHERE user_id = $1",
       [userId]
     );
     return visits;
+  }
+
+  static async addUserVisit(userId: number, visitDate: Date): Promise<void> {
+    await pool.query(
+      "INSERT INTO visits (user_id, visit_date) VALUES ($1, $2)",
+      [userId, visitDate]
+    );
+  }
+
+  static async deleteUserVisit(visitId: number): Promise<void> {
+    await pool.query("DELETE FROM visits WHERE id = $1", [visitId]);
   }
 
 }

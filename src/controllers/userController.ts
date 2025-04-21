@@ -79,3 +79,36 @@ export const getUserVisits = async (req: Request, res: Response) => {
       .json({ error: "Internal server error" });
   }
 };
+
+export const addUserVisit = async (req: Request, res: Response) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    const visitDate = new Date(req.body.visit_date);
+    if (!visitDate) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Visit date is required" });
+      return;
+    }
+    const visit = await UserService.addUserVisit(userId, visitDate);
+    res.status(StatusCodes.CREATED).json(visit);
+  } catch (error) {
+    console.error("Error adding user visit:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal server error" });
+  }
+}
+
+export const deleteUserVisit = async (req: Request, res: Response) => {
+  try {
+    const visitId = parseInt(req.params.visitId);
+    await UserService.deleteUserVisit(visitId);
+    res.status(StatusCodes.NO_CONTENT).send();
+  } catch (error) {
+    console.error("Error deleting user visit:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal server error" });
+  }
+};
