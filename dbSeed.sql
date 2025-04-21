@@ -45,17 +45,16 @@ CREATE TABLE visits (
 -- Insert squads
 INSERT INTO squads(squad_name, squad_description) 
 VALUES 
-    ('Squad A', 'Description of Squad A'),
-    ('Squad B', 'Description of Squad B'),
-    ('Squad C', 'Description of Squad C'),
-    ('Squad D', 'Description of Squad D');
+    ('Arnold Worshipers', 'worshipers of Arnold'),
+    ('Lightweight Baby', 'Lightweight Baby');
 
 -- Insert users
 INSERT INTO users(username, email, encrypted_password) 
 VALUES 
-    ('user1', 'user1@example.com', '$2a$08$d5Nxcj/0pkez0tmVb4CZWOcRcb4eGvo.8OOSU75ptOgZPbk7c.Kyu'),
-    ('user2', 'user2@example.com', '$2a$08$d5Nxcj/0pkez0tmVb4CZWOcRcb4eGvo.8OOSU75ptOgZPbk7c.Kyu'),
-    ('user3', 'user3@example.com', '$2a$08$d5Nxcj/0pkez0tmVb4CZWOcRcb4eGvo.8OOSU75ptOgZPbk7c.Kyu');
+    ('Ryan', 'ryan@example.com', '$2a$08$d5Nxcj/0pkez0tmVb4CZWOcRcb4eGvo.8OOSU75ptOgZPbk7c.Kyu'), --1
+    ('Kit', 'kit2@example.com', '$2a$08$d5Nxcj/0pkez0tmVb4CZWOcRcb4eGvo.8OOSU75ptOgZPbk7c.Kyu'), --2
+    ('Arnold', 'arnold@example.com', '$2a$08$d5Nxcj/0pkez0tmVb4CZWOcRcb4eGvo.8OOSU75ptOgZPbk7c.Kyu'), --3
+    ('Ronnie', 'ronnie@example.com', '$2a$08$d5Nxcj/0pkez0tmVb4CZWOcRcb4eGvo.8OOSU75ptOgZPbk7c.Kyu'); --4
 
 -- Insert memberships
 INSERT INTO memberships(user_id, squad_id) 
@@ -63,7 +62,9 @@ VALUES
     (1, 1),
     (1, 2),
     (2, 1),
-    (3, 3);
+    (2, 2),
+    (3, 1),
+    (4, 2);
 
 -- Insert visits
 INSERT INTO visits(user_id, visit_date)
