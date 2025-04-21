@@ -10,7 +10,7 @@ const options: Options = {
     },
     servers: [
       {
-        url: "http://localhost:8080", // TODO: Change when deploying
+        url: process.env.API_URL, // TODO: Change when deploying
       },
     ],
   },
