@@ -1,5 +1,6 @@
 {
   "name": "GymAppBackEnd",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -23,7 +24,9 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2"
+    "eslint-plugin-react": "^7.33.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
