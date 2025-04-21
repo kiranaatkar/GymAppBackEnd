@@ -5,6 +5,7 @@ import setupDB from "./config/setup";
 import swaggerSpec from "./config/swaggerConfig";
 import userRoutes from "./routes/userRoutes";
 import membershipRoutes from "./routes/membershipRoutes";
+import squadRoutes from "./routes/squadRoutes";
 import swaggerUi from "swagger-ui-express";
 
 setupDB(); // Ensure database is ready before starting the server
@@ -21,6 +22,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/api/users", userRoutes);
 app.use("/api/memberships", membershipRoutes);
+app.use("/api/squads", squadRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);

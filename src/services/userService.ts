@@ -75,7 +75,7 @@ class UserService {
 
   static async getUserSquads(userId: number): Promise<Squad[]> {
     const { rows: squads } = await pool.query<Squad>(
-      "SELECT squad_id, squad_name, squad_description FROM memberships m join squads s on m.squad_id = s.id WHERE m.user_id = $1",
+      "SELECT s.id, squad_name, squad_description FROM memberships m join squads s on m.squad_id = s.id WHERE m.user_id = $1",
       [userId]
     );
     return squads;
